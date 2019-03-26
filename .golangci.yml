@@ -1,0 +1,17 @@
+# golangci-lint configuration
+# https://github.com/golangci/golangci-lint
+# Default values are https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
+
+linters:
+  enable:
+    - golint
+    - gofmt
+    - govet
+  fast: true
+
+issues:
+  # Independently from option `exclude` we use default exclude patterns,
+  # it can be disabled by this option. To list all
+  # excluded by default patterns execute `golangci-lint run --help`.
+  # Default value for this option is true.
+  exclude-use-default: false
