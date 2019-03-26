@@ -1,0 +1,69 @@
+version: 2.1
+
+#
+# Workflows
+#
+workflows:
+  version: 2
+  continuous-integration:
+    jobs:
+      - static-analysis
+      - test
+
+#
+# Jobs
+#
+jobs:
+  # Static Analysis
+  static-analysis:
+    executor: golang-executor
+    environment:
+      GOLANGCILINT_VERSION: 1.15.0
+    steps:
+      - checkout
+      - run:
+          name: Install GolangCI-Lint
+          command: |
+            # See https://github.com/golangci/golangci-lint#ci-installation
+            # The need for `sudo` is to avoid this issue: https://github.com/golangci/golangci-lint/issues/250
+            curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | \
+              sudo sh -s -- -b $(go env GOPATH)/bin v${GOLANGCILINT_VERSION}
+      - workaround-golang-issue-30068
+      - run:
+          name: Analyze code for potential errors
+          command: |
+            make lint
+  # Test
+  test:
+    executor: golang-executor
+    steps:
+      - checkout
+      - workaround-golang-issue-30068
+      - run:
+          name: Test packages
+          command: |
+            make test
+      - store_test_results:
+          path: test-results
+
+#
+# Executors
+#
+executors:
+  golang-executor:
+    docker:
+      - image: circleci/golang:1.12.1
+
+#
+# Commands
+#
+commands:
+  workaround-golang-issue-30068:
+    description: |
+      cmd/go: race causes `go mod download` to error with `mkdir /go/pkg/mod..: no such file or directory`
+      https://github.com/golang/go/issues/30068
+    steps:
+      - run:
+          name: "Workaround for golang/go#30068"
+          command: |
+            mkdir -p /go/pkg/mod
