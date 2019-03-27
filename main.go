@@ -16,8 +16,8 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	azure := idp.Azure{}
-	response, err := azure.Authenticate(request, cfg.AzureTenantID)
+	azure := idp.NewAzure(request, cfg.AzureTenantID)
+	response, err := azure.Authenticate()
 	if err != nil {
 		log.Panic(err)
 	}
