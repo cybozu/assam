@@ -12,10 +12,14 @@ import (
 
 // CreateSAMLRequest creates the Base64 encoded SAML authentication request XML compressed by Deflate.
 func CreateSAMLRequest(appIDURI string) (string, error) {
+	// https://docs.microsoft.com/en-us/azure/active-directory/develop/single-sign-on-saml-protocol
+	// ID must not begin with a number, so a common strategy is to prepend a string like "id" to the string
+	// representation of a GUID.
+	// See https://www.w3.org/TR/xmlschema-2/#ID
 	xml := `
 <samlp:AuthnRequest
   AssertionConsumerServiceURL="https://signin.aws.amazon.com/saml"
-  ID="%s"
+  ID="id_%s"
   IssueInstant="%s"
   ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
   Version="2.0"
