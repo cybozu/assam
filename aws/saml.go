@@ -1,4 +1,4 @@
-// Package aws provides the functionality to send requests to AWS.
+// Package aws provides the functionality about AWS.
 package aws
 
 import (
@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// CreateSAMLRequest creates the Base64 encoded SAML authentication request XML that compressed by Deflate.
+// CreateSAMLRequest creates the Base64 encoded SAML authentication request XML compressed by Deflate.
 func CreateSAMLRequest(appIDURI string) (string, error) {
 	xml := `
 <samlp:AuthnRequest
