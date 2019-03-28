@@ -34,10 +34,7 @@ func NewAzure(samlRequest string, tenantID string) Azure {
 }
 
 // Authenticate sends SAML request to Azure and fetches SAML response
-func (a *Azure) Authenticate() (string, error) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
+func (a *Azure) Authenticate(ctx context.Context) (string, error) {
 	c, err := a.setupCDP(ctx)
 	if err != nil {
 		return "", err
@@ -48,7 +45,17 @@ func (a *Azure) Authenticate() (string, error) {
 		return "", err
 	}
 
-	return a.fetchSAMLResponse(ctx, c)
+	response, err := a.fetchSAMLResponse(ctx, c)
+	if err != nil {
+		return "", err
+	}
+
+	err = a.shutdown(ctx, c)
+	if err != nil {
+		return "", err
+	}
+
+	return response, nil
 }
 
 func (a *Azure) logHandler(_ string, is ...interface{}) {
@@ -128,4 +135,18 @@ func (a *Azure) fetchSAMLResponse(ctx context.Context, c *chromedp.CDP) (string,
 	}
 
 	return resp, nil
+}
+
+func (a *Azure) shutdown(ctx context.Context, c *chromedp.CDP) error {
+	err := c.Shutdown(ctx)
+	if err != nil {
+		return err
+	}
+
+	err = c.Wait()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
