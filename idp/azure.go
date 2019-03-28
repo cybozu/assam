@@ -64,6 +64,7 @@ func (a *Azure) logHandler(_ string, is ...interface{}) {
 }
 
 func (a *Azure) setupCDP(ctx context.Context) (*chromedp.CDP, error) {
+	// Need log handler to handle network events.
 	c, err := chromedp.New(ctx, chromedp.WithLog(a.logHandler))
 	if err != nil {
 		return nil, err
