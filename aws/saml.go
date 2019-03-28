@@ -10,6 +10,11 @@ import (
 	"time"
 )
 
+const (
+	// EndpointURL receives SAML response.
+	EndpointURL = "https://signin.aws.amazon.com/saml"
+)
+
 // CreateSAMLRequest creates the Base64 encoded SAML authentication request XML compressed by Deflate.
 func CreateSAMLRequest(appIDURI string) (string, error) {
 	// https://docs.microsoft.com/en-us/azure/active-directory/develop/single-sign-on-saml-protocol
@@ -18,7 +23,7 @@ func CreateSAMLRequest(appIDURI string) (string, error) {
 	// See https://www.w3.org/TR/xmlschema-2/#ID
 	xml := `
 <samlp:AuthnRequest
-  AssertionConsumerServiceURL="https://signin.aws.amazon.com/saml"
+  AssertionConsumerServiceURL="%s"
   ID="id_%s"
   IssueInstant="%s"
   ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
@@ -35,7 +40,7 @@ func CreateSAMLRequest(appIDURI string) (string, error) {
 	}
 
 	instant := time.Now().Format(time.RFC3339)
-	request := fmt.Sprintf(xml, id, instant, appIDURI)
+	request := fmt.Sprintf(xml, EndpointURL, id, instant, appIDURI)
 
 	deflated, err := deflate(request)
 	if err != nil {
