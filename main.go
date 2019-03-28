@@ -41,5 +41,9 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	log.Println(credentials)
+
+	err = aws.SaveCredentials("default", *credentials)
+	if err != nil {
+		log.Panic(err)
+	}
 }
