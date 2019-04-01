@@ -24,6 +24,7 @@ func Execute() {
 
 func newRootCmd() *cobra.Command {
 	var configure bool
+	var profile string
 
 	cmd := &cobra.Command{
 		Use:   "arws",
@@ -31,14 +32,14 @@ func newRootCmd() *cobra.Command {
 		Long:  `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
 		RunE: func(_ *cobra.Command, args []string) error {
 			if configure {
-				err := configureSettings()
+				err := configureSettings(profile)
 				if err != nil {
 					return err
 				}
 				return nil
 			}
 
-			cfg, err := config.NewConfig()
+			cfg, err := config.NewConfig(profile)
 			if err != nil {
 				return err
 			}
@@ -72,7 +73,7 @@ func newRootCmd() *cobra.Command {
 				return err
 			}
 
-			err = aws.SaveCredentials("default", *credentials)
+			err = aws.SaveCredentials(profile, *credentials)
 			if err != nil {
 				return err
 			}
@@ -81,11 +82,12 @@ func newRootCmd() *cobra.Command {
 		},
 	}
 	cmd.PersistentFlags().BoolVarP(&configure, "configure", "c", false, "configure initial settings")
+	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "AWS profile")
 
 	return cmd
 }
 
-func configureSettings() error {
+func configureSettings(profile string) error {
 	p := prompt.NewPrompt()
 	cfg := config.Config{}
 
@@ -120,5 +122,5 @@ func configureSettings() error {
 		return err
 	}
 
-	return config.Save(cfg)
+	return config.Save(cfg, profile)
 }
