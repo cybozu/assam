@@ -9,6 +9,7 @@ import (
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
+	"github.com/chromedp/chromedp/runner"
 	"github.com/cybozu/arws/aws"
 	"net/url"
 )
@@ -34,8 +35,8 @@ func NewAzure(samlRequest string, tenantID string) Azure {
 }
 
 // Authenticate sends SAML request to Azure and fetches SAML response
-func (a *Azure) Authenticate(ctx context.Context) (string, error) {
-	c, err := a.setupCDP(ctx)
+func (a *Azure) Authenticate(ctx context.Context, userDataDir string) (string, error) {
+	c, err := a.setupCDP(ctx, userDataDir)
 	if err != nil {
 		return "", err
 	}
@@ -70,9 +71,10 @@ func (a *Azure) logHandler(_ string, is ...interface{}) {
 	}()
 }
 
-func (a *Azure) setupCDP(ctx context.Context) (*chromedp.CDP, error) {
+func (a *Azure) setupCDP(ctx context.Context, userDataDir string) (*chromedp.CDP, error) {
 	// Need log handler to handle network events.
-	c, err := chromedp.New(ctx, chromedp.WithLog(a.logHandler))
+	c, err := chromedp.New(ctx, chromedp.WithLog(a.logHandler),
+		chromedp.WithRunnerOptions(runner.Flag("user-data-dir", userDataDir)))
 	if err != nil {
 		return nil, err
 	}
