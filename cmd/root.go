@@ -9,7 +9,6 @@ import (
 	"github.com/cybozu/arws/idp"
 	"github.com/cybozu/arws/prompt"
 	"github.com/spf13/cobra"
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -30,23 +29,23 @@ func newRootCmd() *cobra.Command {
 		Use:   "arws",
 		Short: "arws simplifies AssumeRoleWithSAML with CLI",
 		Long:  `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
-		Run: func(_ *cobra.Command, args []string) {
+		RunE: func(_ *cobra.Command, args []string) error {
 			if configure {
 				err := configureSettings()
 				if err != nil {
-					log.Panic(err)
+					return err
 				}
-				return
+				return nil
 			}
 
 			cfg, err := config.NewConfig()
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
 
 			request, err := aws.CreateSAMLRequest(cfg.AppIDURI)
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
 
 			ctx, cancel := context.WithCancel(context.Background())
@@ -55,28 +54,30 @@ func newRootCmd() *cobra.Command {
 			azure := idp.NewAzure(request, cfg.AzureTenantID)
 			base64Response, err := azure.Authenticate(ctx)
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
 
 			response, err := aws.ParseSAMLResponse(base64Response)
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
 
 			roleArn, principalArn, err := aws.ExtractRoleArnAndPrincipalArn(*response)
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
 
 			credentials, err := aws.AssumeRoleWithSAML(ctx, roleArn, principalArn, base64Response)
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
 
 			err = aws.SaveCredentials("default", *credentials)
 			if err != nil {
-				log.Panic(err)
+				return err
 			}
+
+			return nil
 		},
 	}
 	cmd.PersistentFlags().BoolVarP(&configure, "configure", "c", false, "configure initial settings")
