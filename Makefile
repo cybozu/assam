@@ -13,3 +13,7 @@ lint: ## lint: Analyze code for potential errors.
 test: ## test: Test packages.
 	mkdir -p test-results
 	gotestsum --junitfile test-results/results.xml
+
+.PHONY: package
+package: ## package: build executable binary archives.
+	goreleaser --snapshot --skip-publish --rm-dist
