@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/aws/aws-sdk-go/aws/defaults"
 	"gopkg.in/ini.v1"
 	"strconv"
@@ -22,7 +23,7 @@ const (
 )
 
 // NewConfig returns Config from default AWS config file
-func NewConfig() (Config, error) {
+func NewConfig(profile string) (Config, error) {
 	cfg := Config{}
 
 	f, err := loadConfigFile()
@@ -30,7 +31,7 @@ func NewConfig() (Config, error) {
 		return cfg, err
 	}
 
-	section, err := f.GetSection("default")
+	section, err := f.GetSection(sectionName(profile))
 	if err != nil {
 		return cfg, err
 	}
@@ -68,16 +69,13 @@ func NewConfig() (Config, error) {
 }
 
 // Save saves config to file.
-func Save(cfg Config) error {
+func Save(cfg Config, profile string) error {
 	f, err := loadConfigFile()
 	if err != nil {
 		return err
 	}
 
-	section, err := f.GetSection("default")
-	if err != nil {
-		return err
-	}
+	section := f.Section(sectionName(profile))
 
 	section.Key(appIDURIKeyName).SetValue(cfg.AppIDURI)
 	section.Key(azureTenantIDKeyName).SetValue(cfg.AzureTenantID)
@@ -91,4 +89,11 @@ func Save(cfg Config) error {
 func loadConfigFile() (*ini.File, error) {
 	file := defaults.SharedConfigFilename()
 	return ini.Load(file)
+}
+
+func sectionName(profile string) string {
+	if profile == "default" {
+		return profile
+	}
+	return fmt.Sprintf("profile %s", profile)
 }
