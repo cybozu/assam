@@ -13,3 +13,6 @@
 
 # Test report
 test-results/
+
+# Release packages
+dist/
