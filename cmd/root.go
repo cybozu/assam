@@ -53,7 +53,7 @@ func newRootCmd() *cobra.Command {
 			defer cancel()
 
 			azure := idp.NewAzure(request, cfg.AzureTenantID)
-			base64Response, err := azure.Authenticate(ctx)
+			base64Response, err := azure.Authenticate(ctx, cfg.ChromeUserDataDir)
 			if err != nil {
 				return err
 			}
