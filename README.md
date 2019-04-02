@@ -25,6 +25,8 @@ options:
     AWS profile name (default: "default")
 ```
 
+Please be careful that assam overrides default profile in `.aws/credentials` by default. If you don't want that, please specify `-p|-profile` option.
+
 ## Install
 
 ### Homebrew
