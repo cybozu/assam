@@ -1,4 +1,4 @@
-arws
+assam
 ====
 
 It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.
@@ -16,7 +16,7 @@ And Google Chrome is required.
 ## Usage
 
 ```
-Usage: arws [options]
+Usage: assam [options]
 
 options:
   -c, -configure
@@ -28,12 +28,12 @@ options:
 ## Install
 
 ```bash
-$ go get -u github.com/cybozu/arws
+$ go get -u github.com/cybozu/assam
 ```
 
 ## Contribution
 
-1. Fork ([https://github.com/cybozu/arws](https://github.com/cybozu/arws))
+1. Fork ([https://github.com/cybozu/assam](https://github.com/cybozu/assam))
 2. Create a feature branch
 3. Commit your changes
 4. Rebase your local changes against the master branch
@@ -42,4 +42,4 @@ $ go get -u github.com/cybozu/arws
 
 ## Licence
 
-[MIT](https://github.com/cybozu/arws/blob/master/LICENSE)
+[MIT](https://github.com/cybozu/assam/blob/master/LICENSE)

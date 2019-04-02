@@ -3,11 +3,11 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/cybozu/arws/aws"
-	"github.com/cybozu/arws/config"
-	"github.com/cybozu/arws/defaults"
-	"github.com/cybozu/arws/idp"
-	"github.com/cybozu/arws/prompt"
+	"github.com/cybozu/assam/aws"
+	"github.com/cybozu/assam/config"
+	"github.com/cybozu/assam/defaults"
+	"github.com/cybozu/assam/idp"
+	"github.com/cybozu/assam/prompt"
 	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
@@ -27,8 +27,8 @@ func newRootCmd() *cobra.Command {
 	var profile string
 
 	cmd := &cobra.Command{
-		Use:   "arws",
-		Short: "arws simplifies AssumeRoleWithSAML with CLI",
+		Use:   "assam",
+		Short: "assam simplifies AssumeRoleWithSAML with CLI",
 		Long:  `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
 		RunE: func(_ *cobra.Command, args []string) error {
 			if configure {
@@ -116,7 +116,7 @@ func configureSettings(profile string) error {
 	}
 
 	cfg.ChromeUserDataDir, err = p.AskString("Chrome User Data Directory", &prompt.Options{
-		Default: filepath.Join(defaults.UserHomeDir(), ".config", "arws", "chrome-user-data"),
+		Default: filepath.Join(defaults.UserHomeDir(), ".config", "assam", "chrome-user-data"),
 	})
 	if err != nil {
 		return err
