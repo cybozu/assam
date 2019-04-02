@@ -14,6 +14,13 @@ import (
 	"strconv"
 )
 
+// goreleaser embed variables by ldflags
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 // Execute runs root command
 func Execute() {
 	if err := newRootCmd().Execute(); err != nil {
@@ -25,12 +32,18 @@ func Execute() {
 func newRootCmd() *cobra.Command {
 	var configure bool
 	var profile string
+	var showVersion bool
 
 	cmd := &cobra.Command{
 		Use:   "assam",
 		Short: "assam simplifies AssumeRoleWithSAML with CLI",
 		Long:  `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
 		RunE: func(_ *cobra.Command, args []string) error {
+			if showVersion {
+				printVersion()
+				return nil
+			}
+
 			if configure {
 				err := configureSettings(profile)
 				if err != nil {
@@ -83,8 +96,13 @@ func newRootCmd() *cobra.Command {
 	}
 	cmd.PersistentFlags().BoolVarP(&configure, "configure", "c", false, "configure initial settings")
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "AWS profile")
+	cmd.PersistentFlags().BoolVarP(&showVersion, "version", "v", false, "Show version")
 
 	return cmd
+}
+
+func printVersion() {
+	fmt.Printf("version: %s, commit: %s, date: %s\n", version, commit, date)
 }
 
 func configureSettings(profile string) error {
