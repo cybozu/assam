@@ -10,7 +10,7 @@ import (
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 	"github.com/chromedp/chromedp/runner"
-	"github.com/cybozu/arws/aws"
+	"github.com/cybozu/assam/aws"
 	"net/url"
 )
 

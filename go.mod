@@ -1,4 +1,4 @@
-module github.com/cybozu/arws
+module github.com/cybozu/assam
 
 go 1.12
 
