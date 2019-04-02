@@ -13,6 +13,14 @@ workflows:
           requires:
             - static-analysis
             - test
+  release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
 
 #
 # Jobs
@@ -64,6 +72,14 @@ jobs:
           name: Package binaries
           command: |
             make package
+  # Release
+  release:
+    executor: golang-executor
+    steps:
+      - checkout
+      - run:
+          name: Upload GitHub Release
+          command: curl -sL https://git.io/goreleaser | bash
 
 #
 # Executors
