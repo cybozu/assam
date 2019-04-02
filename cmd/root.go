@@ -107,35 +107,58 @@ func printVersion() {
 
 func configureSettings(profile string) error {
 	p := prompt.NewPrompt()
-	cfg := config.Config{}
 
-	var err error
-	cfg.AzureTenantID, err = p.AskString("Azure Tenant ID", nil)
+	// Load current config.
+	cfg, err := config.NewConfig(profile)
+	if err != nil {
+		cfg = config.Config{}
+	}
+
+	// Azure Tenant ID
+	var azureTenantIDOptions prompt.Options
+	if cfg.AzureTenantID != "" {
+		azureTenantIDOptions.Default = cfg.AzureTenantID
+	}
+	cfg.AzureTenantID, err = p.AskString("Azure Tenant ID", &azureTenantIDOptions)
 	if err != nil {
 		return err
 	}
 
-	cfg.AppIDURI, err = p.AskString("App ID URI", nil)
+	// App ID URI
+	var appIDURIOptions prompt.Options
+	if cfg.AppIDURI != "" {
+		appIDURIOptions.Default = cfg.AppIDURI
+	}
+	cfg.AppIDURI, err = p.AskString("App ID URI", &appIDURIOptions)
 	if err != nil {
 		return err
 	}
 
-	cfg.DefaultSessionDurationHours, err = p.AskInt("Default Session Duration Hours (1-12)", &prompt.Options{
-		ValidateFunc: func(val string) error {
-			duration, err := strconv.Atoi(val)
-			if err != nil || duration < 1 || 12 < duration {
-				return fmt.Errorf("default session duration hours must be between 1 and 12: %s", val)
-			}
-			return nil
-		},
-	})
+	// Default session duration hours
+	var defaultSessionDurationHoursOptions prompt.Options
+	if cfg.DefaultSessionDurationHours != 0 {
+		defaultSessionDurationHoursOptions.Default = strconv.Itoa(cfg.DefaultSessionDurationHours)
+	}
+	defaultSessionDurationHoursOptions.ValidateFunc = func(val string) error {
+		duration, err := strconv.Atoi(val)
+		if err != nil || duration < 1 || 12 < duration {
+			return fmt.Errorf("default session duration hours must be between 1 and 12: %s", val)
+		}
+		return nil
+	}
+	cfg.DefaultSessionDurationHours, err = p.AskInt("Default Session Duration Hours (1-12)", &defaultSessionDurationHoursOptions)
 	if err != nil {
 		return err
 	}
 
-	cfg.ChromeUserDataDir, err = p.AskString("Chrome User Data Directory", &prompt.Options{
-		Default: filepath.Join(defaults.UserHomeDir(), ".config", "assam", "chrome-user-data"),
-	})
+	// Chrome user data directory
+	var chromeUserDataDirOptions prompt.Options
+	if cfg.ChromeUserDataDir != "" {
+		chromeUserDataDirOptions.Default = cfg.ChromeUserDataDir
+	} else {
+		chromeUserDataDirOptions.Default = filepath.Join(defaults.UserHomeDir(), ".config", "assam", "chrome-user-data")
+	}
+	cfg.ChromeUserDataDir, err = p.AskString("Chrome User Data Directory", &chromeUserDataDirOptions)
 	if err != nil {
 		return err
 	}
