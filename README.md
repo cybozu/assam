@@ -27,9 +27,15 @@ options:
 
 ## Install
 
+### Homebrew
+
 ```bash
-$ go get -u github.com/cybozu/assam
+$ brew install cybozu/assam/assam
 ```
+
+### Manual
+
+Download a binary file from [Release](https://github.com/cybozu/assam/releases) and save it to the desired location.
 
 ## Contribution
 
