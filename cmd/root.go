@@ -10,8 +10,10 @@ import (
 	"github.com/cybozu/assam/prompt"
 	"github.com/spf13/cobra"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strconv"
+	"syscall"
 )
 
 // goreleaser embed variables by ldflags
@@ -64,6 +66,8 @@ func newRootCmd() *cobra.Command {
 
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
+
+			handleSignal(cancel)
 
 			azure := idp.NewAzure(request, cfg.AzureTenantID)
 			base64Response, err := azure.Authenticate(ctx, cfg.ChromeUserDataDir)
@@ -164,4 +168,16 @@ func configureSettings(profile string) error {
 	}
 
 	return config.Save(cfg, profile)
+}
+
+func handleSignal(cancel context.CancelFunc) {
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGHUP, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGTERM)
+
+	go func() {
+		for {
+			<-signalChan
+			cancel()
+		}
+	}()
 }
