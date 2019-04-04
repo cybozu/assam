@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws/defaults"
 	"gopkg.in/ini.v1"
+	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -83,12 +85,18 @@ func Save(cfg Config, profile string) error {
 	section.Key(chromeUserDataDirKeyName).SetValue(cfg.ChromeUserDataDir)
 
 	file := defaults.SharedConfigFilename()
+	dir := filepath.Dir(file)
+	err = os.MkdirAll(dir, os.FileMode(0755))
+	if err != nil {
+		return err
+	}
+
 	return f.SaveTo(file)
 }
 
 func loadConfigFile() (*ini.File, error) {
 	file := defaults.SharedConfigFilename()
-	return ini.Load(file)
+	return ini.LooseLoad(file)
 }
 
 func sectionName(profile string) string {
