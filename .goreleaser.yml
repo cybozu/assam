@@ -29,6 +29,12 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+    - '^refactor:'
+    - '^ci:'
+    - '^chore:'
+    - '^style:'
+    - Merge pull request
+    - Merge branch
 brew:
   github:
     owner: cybozu
