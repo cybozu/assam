@@ -26,7 +26,7 @@ var (
 // Execute runs root command
 func Execute() {
 	if err := newRootCmd().Execute(); err != nil {
-		fmt.Println(err)
+		// Not print an error because cobra.Command prints it.
 		os.Exit(1)
 	}
 }
@@ -37,9 +37,10 @@ func newRootCmd() *cobra.Command {
 	var showVersion bool
 
 	cmd := &cobra.Command{
-		Use:   "assam",
-		Short: "assam simplifies AssumeRoleWithSAML with CLI",
-		Long:  `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
+		Use:          "assam",
+		Short:        "assam simplifies AssumeRoleWithSAML with CLI",
+		Long:         `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
+		SilenceUsage: true,
 		RunE: func(_ *cobra.Command, args []string) error {
 			if showVersion {
 				printVersion()
