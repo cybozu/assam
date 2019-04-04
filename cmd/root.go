@@ -26,7 +26,7 @@ var (
 // Execute runs root command
 func Execute() {
 	if err := newRootCmd().Execute(); err != nil {
-		fmt.Println(err)
+		// Not print an error because cobra.Command prints it.
 		os.Exit(1)
 	}
 }
