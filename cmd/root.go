@@ -8,6 +8,7 @@ import (
 	"github.com/cybozu/assam/defaults"
 	"github.com/cybozu/assam/idp"
 	"github.com/cybozu/assam/prompt"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
@@ -57,7 +58,7 @@ func newRootCmd() *cobra.Command {
 
 			cfg, err := config.NewConfig(profile)
 			if err != nil {
-				return err
+				return errors.Wrap(err, "please run `assam --configure` at the first time")
 			}
 
 			request, err := aws.CreateSAMLRequest(cfg.AppIDURI)
