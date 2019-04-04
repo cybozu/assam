@@ -34,3 +34,5 @@ brew:
     owner: cybozu
     name: homebrew-assam
   description: "Get a credential by AssumeRoleWithSAML for AWS CLI and SDK"
+release:
+  prerelease: auto
