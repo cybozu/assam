@@ -121,12 +121,12 @@ func ExtractRoleArnAndPrincipalArn(samlResponse SAMLResponse) (string, string, e
 }
 
 // AssumeRoleWithSAML sends a AssumeRoleWithSAML request to AWS and returns credentials
-func AssumeRoleWithSAML(ctx context.Context, roleArn string, principalArn string, base64Response string) (*sts.Credentials, error) {
+func AssumeRoleWithSAML(ctx context.Context, durationHours int, roleArn string, principalArn string, base64Response string) (*sts.Credentials, error) {
 	sess := session.Must(session.NewSession())
 	svc := sts.New(sess)
 
 	input := sts.AssumeRoleWithSAMLInput{
-		DurationSeconds: aws.Int64(1 * 60 * 60),
+		DurationSeconds: aws.Int64(int64(durationHours) * 60 * 60),
 		RoleArn:         aws.String(roleArn),
 		PrincipalArn:    aws.String(principalArn),
 		SAMLAssertion:   aws.String(base64Response),

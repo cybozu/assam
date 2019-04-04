@@ -87,7 +87,7 @@ func newRootCmd() *cobra.Command {
 				return err
 			}
 
-			credentials, err := aws.AssumeRoleWithSAML(ctx, roleArn, principalArn, base64Response)
+			credentials, err := aws.AssumeRoleWithSAML(ctx, cfg.DefaultSessionDurationHours, roleArn, principalArn, base64Response)
 			if err != nil {
 				return err
 			}
