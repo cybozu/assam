@@ -40,5 +40,7 @@ brew:
     owner: cybozu
     name: homebrew-assam
   description: "Get a credential by AssumeRoleWithSAML for AWS CLI and SDK"
+  # Skip Homebrew Formula upload when prerelease.
+  skip_upload: auto
 release:
   prerelease: auto
