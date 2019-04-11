@@ -12,6 +12,7 @@ import (
 	"github.com/chromedp/chromedp/runner"
 	"github.com/cybozu/assam/aws"
 	"net/url"
+	"os"
 )
 
 const (
@@ -72,9 +73,12 @@ func (a *Azure) logHandler(_ string, is ...interface{}) {
 }
 
 func (a *Azure) setupCDP(ctx context.Context, userDataDir string) (*chromedp.CDP, error) {
+	// Need to expand environment variables because chromedp does not expand.
+	expandedDir := os.ExpandEnv(userDataDir)
+
 	// Need log handler to handle network events.
 	c, err := chromedp.New(ctx, chromedp.WithLog(a.logHandler),
-		chromedp.WithRunnerOptions(runner.Flag("user-data-dir", userDataDir)))
+		chromedp.WithRunnerOptions(runner.Flag("user-data-dir", expandedDir)))
 	if err != nil {
 		return nil, err
 	}
