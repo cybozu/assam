@@ -9,7 +9,7 @@ import (
 // SaveCredentials saves credentials to AWS credentials file.
 func SaveCredentials(profileName string, credentials sts.Credentials) error {
 	file := defaults.SharedCredentialsFilename()
-	c, err := ini.Load(file)
+	c, err := ini.LooseLoad(file)
 	if err != nil {
 		return err
 	}
