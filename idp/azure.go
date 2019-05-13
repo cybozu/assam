@@ -2,15 +2,11 @@ package idp
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
-	"github.com/chromedp/cdproto"
-	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
-	"github.com/chromedp/chromedp/runner"
 	"github.com/cybozu/assam/aws"
+	"github.com/pkg/errors"
 	"net/url"
 	"os"
 )
@@ -23,7 +19,7 @@ const (
 type Azure struct {
 	samlRequest string
 	tenantID    string
-	msgChan     chan cdproto.Message
+	msgChan     chan *network.EventRequestWillBeSent
 }
 
 // NewAzure returns Azure
@@ -31,28 +27,29 @@ func NewAzure(samlRequest string, tenantID string) Azure {
 	return Azure{
 		samlRequest: samlRequest,
 		tenantID:    tenantID,
-		msgChan:     make(chan cdproto.Message),
+		msgChan:     make(chan *network.EventRequestWillBeSent),
 	}
 }
 
 // Authenticate sends SAML request to Azure and fetches SAML response
 func (a *Azure) Authenticate(ctx context.Context, userDataDir string) (string, error) {
-	c, err := a.setupCDP(ctx, userDataDir)
+	ctx, cancel := a.setupContext(ctx, userDataDir)
+	defer cancel()
+
+	// Need network.Enable() to handle network events.
+	err := chromedp.Run(ctx, network.Enable())
 	if err != nil {
 		return "", err
 	}
 
-	err = a.navigateToLoginURL(ctx, c)
+	a.listenNetworkRequest(ctx)
+
+	err = a.navigateToLoginURL(ctx)
 	if err != nil {
 		return "", err
 	}
 
-	response, err := a.fetchSAMLResponse(ctx, c)
-	if err != nil {
-		return "", err
-	}
-
-	err = a.shutdown(ctx, c)
+	response, err := a.fetchSAMLResponse(ctx)
 	if err != nil {
 		return "", err
 	}
@@ -60,99 +57,53 @@ func (a *Azure) Authenticate(ctx context.Context, userDataDir string) (string, e
 	return response, nil
 }
 
-func (a *Azure) logHandler(_ string, is ...interface{}) {
-	go func() {
-		for _, elem := range is {
-			var msg cdproto.Message
-			err := json.Unmarshal([]byte(fmt.Sprintf("%s", elem)), &msg)
-			if err == nil {
-				a.msgChan <- msg
-			}
-		}
-	}()
-}
-
-func (a *Azure) setupCDP(ctx context.Context, userDataDir string) (*chromedp.CDP, error) {
+func (a *Azure) setupContext(ctx context.Context, userDataDir string) (context.Context, context.CancelFunc) {
 	// Need to expand environment variables because chromedp does not expand.
 	expandedDir := os.ExpandEnv(userDataDir)
 
-	// Need log handler to handle network events.
-	c, err := chromedp.New(ctx, chromedp.WithLog(a.logHandler),
-		chromedp.WithRunnerOptions(runner.Flag("user-data-dir", expandedDir)))
-	if err != nil {
-		return nil, err
-	}
-
-	err = c.Run(ctx, network.Enable())
-	if err != nil {
-		return nil, err
-	}
-
-	return c, nil
+	opts := []chromedp.ExecAllocatorOption{chromedp.Flag("user-data-dir", expandedDir)}
+	allocContext, _ := chromedp.NewExecAllocator(context.Background(), opts...)
+	return chromedp.NewContext(allocContext)
 }
 
-func (a *Azure) navigateToLoginURL(ctx context.Context, c *chromedp.CDP) error {
+func (a *Azure) listenNetworkRequest(ctx context.Context) {
+	chromedp.ListenTarget(ctx, func(v interface{}) {
+		go func() {
+			if req, ok := v.(*network.EventRequestWillBeSent); ok {
+				a.msgChan <- req
+			}
+		}()
+	})
+}
+
+func (a *Azure) navigateToLoginURL(ctx context.Context) error {
 	loginURL := fmt.Sprintf(loginURLTemplate, a.tenantID, url.QueryEscape(string(a.samlRequest)))
-	return c.Run(ctx, chromedp.Navigate(loginURL))
+	return chromedp.Run(ctx, chromedp.Navigate(loginURL))
 }
 
-func (a *Azure) fetchSAMLResponse(ctx context.Context, c *chromedp.CDP) (string, error) {
-	var resp string
-	err := c.Run(ctx, chromedp.ActionFunc(func(ctx context.Context, h cdp.Executor) error {
-		for {
-			var msg cdproto.Message
-
-			select {
-			case <-ctx.Done():
-				return ctx.Err()
-			case msg = <-a.msgChan:
-			}
-
-			switch msg.Method.String() {
-			case "Network.requestWillBeSent":
-				var req network.EventRequestWillBeSent
-				err := json.Unmarshal(msg.Params, &req)
-				if err != nil {
-					return err
-				}
-
-				if req.Request.URL != aws.EndpointURL {
-					continue
-				}
-
-				form, err := url.ParseQuery(req.Request.PostData)
-				if err != nil {
-					return err
-				}
-
-				samlResponse, ok := form["SAMLResponse"]
-				if !ok || len(a.samlRequest) == 0 {
-					return errors.New("no such key: SAMLResponse")
-				}
-
-				resp = samlResponse[0]
-
-				return nil
-			}
+func (a *Azure) fetchSAMLResponse(ctx context.Context) (string, error) {
+	for {
+		var req *network.EventRequestWillBeSent
+		select {
+		case <-ctx.Done():
+			return "", ctx.Err()
+		case req = <-a.msgChan:
 		}
-	}))
-	if err != nil {
-		return "", err
+
+		if req.Request.URL != aws.EndpointURL {
+			continue
+		}
+
+		form, err := url.ParseQuery(req.Request.PostData)
+		if err != nil {
+			return "", err
+		}
+
+		samlResponse, ok := form["SAMLResponse"]
+		if !ok || len(a.samlRequest) == 0 {
+			return "", errors.New("no such key: SAMLResponse")
+		}
+
+		return samlResponse[0], nil
 	}
-
-	return resp, nil
-}
-
-func (a *Azure) shutdown(ctx context.Context, c *chromedp.CDP) error {
-	err := c.Shutdown(ctx)
-	if err != nil {
-		return err
-	}
-
-	err = c.Wait()
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
