@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/aws/aws-sdk-go v1.19.2
 	github.com/chromedp/cdproto v0.0.0-20190429085128-1aa4f57ff2a9
-	github.com/chromedp/chromedp v0.2.1-0.20190512194001-9dcb20c2d55a
+	github.com/chromedp/chromedp v0.3.0
 	github.com/google/uuid v1.1.1
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/pkg/errors v0.8.1
