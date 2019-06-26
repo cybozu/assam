@@ -61,8 +61,14 @@ func (a *Azure) setupContext(ctx context.Context, userDataDir string) (context.C
 	// Need to expand environment variables because chromedp does not expand.
 	expandedDir := os.ExpandEnv(userDataDir)
 
-	opts := []chromedp.ExecAllocatorOption{chromedp.Flag("user-data-dir", expandedDir)}
+	opts := []chromedp.ExecAllocatorOption{
+		chromedp.UserDataDir(expandedDir),
+		chromedp.NoFirstRun,
+		chromedp.NoDefaultBrowserCheck,
+	}
+
 	allocContext, _ := chromedp.NewExecAllocator(context.Background(), opts...)
+
 	return chromedp.NewContext(allocContext)
 }
 
