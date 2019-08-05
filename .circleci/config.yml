@@ -93,7 +93,7 @@ jobs:
 executors:
   golang-executor:
     docker:
-      - image: circleci/golang:1.12.1
+      - image: circleci/golang:1.12.7
 
 #
 # Commands
