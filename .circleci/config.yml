@@ -93,7 +93,7 @@ jobs:
 executors:
   golang-executor:
     docker:
-      - image: circleci/golang:1.12.1
+      - image: circleci/golang:1.12.7
 
 #
 # Commands
@@ -114,14 +114,17 @@ commands:
         type: steps
         default: []
     steps:
+      - run:
+          name: Generate Go version file
+          command: go version > /go/version
       - restore_cache:
           name: Restore Go Modules cache
           keys:
-            - go-mod-v1-{{ checksum "go.mod" }}
-            - go-mod-v1-
+            - go-mod-v1-{{ checksum "/go/version" }}-{{ checksum "go.mod" }}
+            - go-mod-v1-{{ checksum "/go/version" }}-
       - << parameters.steps-requiring-cache >>
       - save_cache:
           name: Save Go Modules cache
-          key: go-mod-v1-{{ checksum "go.mod" }}
+          key: go-mod-v1-{{ checksum "/go/version" }}-{{ checksum "go.mod" }}
           paths:
             - "/go/pkg/mod"
