@@ -50,11 +50,13 @@ jobs:
     executor: golang-executor
     steps:
       - checkout
-      - workaround-golang-issue-30068
-      - run:
-          name: Test packages
-          command: |
-            make test
+      - with-go-modules-cache:
+          steps-requiring-cache:
+            - workaround-golang-issue-30068
+            - run:
+                name: Test packages
+                command: |
+                  make test
       - store_test_results:
           path: test-results
   # Package
@@ -62,24 +64,28 @@ jobs:
     executor: golang-executor
     steps:
       - checkout
-      - workaround-golang-issue-30068
-      - run:
-          name: Install goreleaser
-          command: |
-            curl -sL https://github.com/goreleaser/goreleaser/releases/download/v0.104.1/goreleaser_amd64.deb > /tmp/goreleaser_amd64.deb
-            sudo dpkg -i /tmp/goreleaser_amd64.deb
-      - run:
-          name: Package binaries
-          command: |
-            make package
+      - with-go-modules-cache:
+          steps-requiring-cache:
+            - workaround-golang-issue-30068
+            - run:
+                name: Install goreleaser
+                command: |
+                  curl -sL https://github.com/goreleaser/goreleaser/releases/download/v0.104.1/goreleaser_amd64.deb > /tmp/goreleaser_amd64.deb
+                  sudo dpkg -i /tmp/goreleaser_amd64.deb
+            - run:
+                name: Package binaries
+                command: |
+                  make package
   # Release
   release:
     executor: golang-executor
     steps:
       - checkout
-      - run:
-          name: Upload GitHub Release
-          command: curl -sL https://git.io/goreleaser | bash
+      - with-go-modules-cache:
+          steps-requiring-cache:
+            - run:
+                name: Upload GitHub Release
+                command: curl -sL https://git.io/goreleaser | bash
 
 #
 # Executors
@@ -102,3 +108,20 @@ commands:
           name: "Workaround for golang/go#30068"
           command: |
             mkdir -p /go/pkg/mod
+  with-go-modules-cache:
+    parameters:
+      steps-requiring-cache:
+        type: steps
+        default: []
+    steps:
+      - restore_cache:
+          name: Restore Go Modules cache
+          keys:
+            - go-mod-v1-{{ checksum "go.mod" }}
+            - go-mod-v1-
+      - << parameters.steps-requiring-cache >>
+      - save_cache:
+          name: Save Go Modules cache
+          key: go-mod-v1-{{ checksum "go.mod" }}
+          paths:
+            - "/go/pkg/mod"
