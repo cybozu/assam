@@ -8,7 +8,6 @@ require (
 	github.com/chromedp/chromedp v0.3.0
 	github.com/google/uuid v1.1.1
 	github.com/pkg/errors v0.8.1
-	github.com/smartystreets/goconvey v0.0.0-20190306220146-200a235640ff // indirect
 	github.com/spf13/cobra v0.0.5
 	github.com/stretchr/testify v1.3.0
 	golang.org/x/net v0.0.0-20190327025741-74e053c68e29 // indirect
