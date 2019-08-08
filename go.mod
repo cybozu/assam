@@ -8,9 +8,8 @@ require (
 	github.com/chromedp/chromedp v0.3.1
 	github.com/google/uuid v1.1.1
 	github.com/pkg/errors v0.8.1
-	github.com/smartystreets/goconvey v0.0.0-20190306220146-200a235640ff // indirect
 	github.com/spf13/cobra v0.0.5
 	github.com/stretchr/testify v1.3.0
 	golang.org/x/net v0.0.0-20190327025741-74e053c68e29 // indirect
-	gopkg.in/ini.v1 v1.42.0
+	gopkg.in/ini.v1 v1.45.0
 )
