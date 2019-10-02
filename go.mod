@@ -12,5 +12,5 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/stretchr/testify v1.4.0
 	golang.org/x/net v0.0.0-20190327025741-74e053c68e29 // indirect
-	gopkg.in/ini.v1 v1.46.0
+	gopkg.in/ini.v1 v1.48.0
 )
