@@ -19,13 +19,14 @@ And Google Chrome is required.
 Usage: assam [options]
 
 options:
-  -c, -configure
+  -c, --configure
     Configuration Mode
-  -p, -profile string
+  -p, --profile string
     AWS profile name (default: "default")
 ```
 
-Please be careful that assam overrides default profile in `.aws/credentials` by default. If you don't want that, please specify `-p|-profile` option.
+Please be careful that assam overrides default profile in `.aws/credentials` by default.
+If you don't want that, please specify `-p|--profile` option.
 
 ## Install
 
