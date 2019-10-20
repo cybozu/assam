@@ -3,12 +3,13 @@ package idp
 import (
 	"context"
 	"fmt"
+	"net/url"
+	"os"
+
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 	"github.com/cybozu/assam/aws"
 	"github.com/pkg/errors"
-	"net/url"
-	"os"
 )
 
 const (
@@ -67,7 +68,7 @@ func (a *Azure) setupContext(ctx context.Context, userDataDir string) (context.C
 		chromedp.NoDefaultBrowserCheck,
 	}
 
-	allocContext, _ := chromedp.NewExecAllocator(context.Background(), opts...)
+	allocContext, _ := chromedp.NewExecAllocator(ctx, opts...)
 
 	return chromedp.NewContext(allocContext)
 }
