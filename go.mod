@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/aws/aws-sdk-go v1.25.43
-	github.com/chromedp/cdproto v0.0.0-20191009033829-c22f49c9ff0a
+	github.com/chromedp/cdproto v0.0.0-20191114225735-6626966fbae4
 	github.com/chromedp/chromedp v0.5.2
 	github.com/google/uuid v1.1.1
 	github.com/pkg/errors v0.8.1
