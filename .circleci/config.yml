@@ -85,6 +85,8 @@ jobs:
           steps-requiring-cache:
             - run:
                 name: Upload GitHub Release
+                environment:
+                  VERSION: v0.104.1
                 command: curl -sL https://git.io/goreleaser | bash
 
 #
