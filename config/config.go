@@ -84,7 +84,7 @@ func Save(cfg Config, profile string) error {
 	section.Key(defaultSessionDurationHoursKeyName).SetValue(strconv.Itoa(cfg.DefaultSessionDurationHours))
 	section.Key(chromeUserDataDirKeyName).SetValue(cfg.ChromeUserDataDir)
 
-	file := defaults.SharedConfigFilename()
+	file := getConfigFilename()
 	dir := filepath.Dir(file)
 	err = os.MkdirAll(dir, os.FileMode(0755))
 	if err != nil {
@@ -94,8 +94,17 @@ func Save(cfg Config, profile string) error {
 	return f.SaveTo(file)
 }
 
+func getConfigFilename() string {
+	// https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
+	file := os.Getenv("AWS_CONFIG_FILE")
+	if len(file) == 0 {
+		file = defaults.SharedConfigFilename()
+	}
+	return file
+}
+
 func loadConfigFile() (*ini.File, error) {
-	file := defaults.SharedConfigFilename()
+	file := getConfigFilename()
 	return ini.LooseLoad(file)
 }
 
