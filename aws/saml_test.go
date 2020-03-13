@@ -138,6 +138,7 @@ func TestParseSAMLResponse(t *testing.T) {
 func TestExtractRoleArnAndPrincipalArn(t *testing.T) {
 	type args struct {
 		samlResponse SAMLResponse
+		roleName     string
 	}
 	tests := []struct {
 		name             string
@@ -173,9 +174,80 @@ func TestExtractRoleArnAndPrincipalArn(t *testing.T) {
 						},
 					},
 				},
+				roleName: "",
 			},
 			wantRoleArn:      "arn:aws:iam::012345678901:role/TestRole",
 			wantPrincipalArn: "arn:aws:iam::012345678901:saml-provider/TestProvider",
+		},
+		{
+			name: "returns first role when role attribute are multi and no roleName argument",
+			args: args{
+				samlResponse: SAMLResponse{
+					Assertion: Assertion{
+						AttributeStatement: AttributeStatement{
+							Attributes: []Attribute{
+								{
+									Name: "dummy",
+									AttributeValues: []AttributeValue{
+										{
+											Value: "dummy",
+										},
+									},
+								},
+								{
+									Name: roleAttributeName,
+									AttributeValues: []AttributeValue{
+										{
+											Value: "arn:aws:iam::012345678901:role/TestRole1,arn:aws:iam::012345678901:saml-provider/TestProvider1",
+										},
+										{
+											Value: "arn:aws:iam::012345678901:role/TestRole2,arn:aws:iam::012345678901:saml-provider/TestProvider2",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				roleName: "",
+			},
+			wantRoleArn:      "arn:aws:iam::012345678901:role/TestRole1",
+			wantPrincipalArn: "arn:aws:iam::012345678901:saml-provider/TestProvider1",
+		},
+		{
+			name: "returns specify role when role attribute are multi and roleName argument",
+			args: args{
+				samlResponse: SAMLResponse{
+					Assertion: Assertion{
+						AttributeStatement: AttributeStatement{
+							Attributes: []Attribute{
+								{
+									Name: "dummy",
+									AttributeValues: []AttributeValue{
+										{
+											Value: "dummy",
+										},
+									},
+								},
+								{
+									Name: roleAttributeName,
+									AttributeValues: []AttributeValue{
+										{
+											Value: "arn:aws:iam::012345678901:role/TestRole1,arn:aws:iam::012345678901:saml-provider/TestProvider1",
+										},
+										{
+											Value: "arn:aws:iam::012345678901:role/TestRole2,arn:aws:iam::012345678901:saml-provider/TestProvider2",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				roleName: "TestRole2",
+			},
+			wantRoleArn:      "arn:aws:iam::012345678901:role/TestRole2",
+			wantPrincipalArn: "arn:aws:iam::012345678901:saml-provider/TestProvider2",
 		},
 		{
 			name: "returns an error when role attribute does not exist",
@@ -196,13 +268,14 @@ func TestExtractRoleArnAndPrincipalArn(t *testing.T) {
 						},
 					},
 				},
+				roleName: "",
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1, err := ExtractRoleArnAndPrincipalArn(tt.args.samlResponse)
+			got, got1, err := ExtractRoleArnAndPrincipalArn(tt.args.samlResponse, tt.args.roleName)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ExtractRoleArnAndPrincipalArn() error = %v, wantErr %v", err, tt.wantErr)
 				return
