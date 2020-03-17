@@ -34,6 +34,7 @@ func Execute() {
 
 func newRootCmd() *cobra.Command {
 	var configure bool
+	var roleName string
 	var profile string
 	var showVersion bool
 
@@ -82,7 +83,7 @@ func newRootCmd() *cobra.Command {
 				return err
 			}
 
-			roleArn, principalArn, err := aws.ExtractRoleArnAndPrincipalArn(*response)
+			roleArn, principalArn, err := aws.ExtractRoleArnAndPrincipalArn(*response, roleName)
 			if err != nil {
 				return err
 			}
@@ -102,6 +103,7 @@ func newRootCmd() *cobra.Command {
 	}
 	cmd.PersistentFlags().BoolVarP(&configure, "configure", "c", false, "configure initial settings")
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "AWS profile")
+	cmd.PersistentFlags().StringVarP(&roleName, "role", "r", "", "AWS IAM role name")
 	cmd.PersistentFlags().BoolVarP(&showVersion, "version", "v", false, "Show version")
 
 	return cmd

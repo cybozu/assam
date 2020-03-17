@@ -103,7 +103,7 @@ func ParseSAMLResponse(base64Response string) (*SAMLResponse, error) {
 }
 
 // ExtractRoleArnAndPrincipalArn extracts role ARN and principal ARN from SAML response
-func ExtractRoleArnAndPrincipalArn(samlResponse SAMLResponse) (string, string, error) {
+func ExtractRoleArnAndPrincipalArn(samlResponse SAMLResponse, roleName string) (string, string, error) {
 	for _, attr := range samlResponse.Assertion.AttributeStatement.Attributes {
 		if attr.Name != roleAttributeName {
 			continue
@@ -113,6 +113,9 @@ func ExtractRoleArnAndPrincipalArn(samlResponse SAMLResponse) (string, string, e
 			s := strings.Split(v.Value, ",")
 			roleArn := s[0]
 			principalArn := s[1]
+			if roleName != "" && strings.Split(roleArn, "/")[1] != roleName {
+				continue
+			}
 			return roleArn, principalArn, nil
 		}
 	}
