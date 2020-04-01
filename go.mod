@@ -11,7 +11,7 @@ require (
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
-	github.com/spf13/cobra v0.0.5
+	github.com/spf13/cobra v0.0.7
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/sys v0.0.0-20200819171115-d785dc25833f // indirect
 	gopkg.in/ini.v1 v1.57.0
