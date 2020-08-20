@@ -14,5 +14,5 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/sys v0.0.0-20200819171115-d785dc25833f // indirect
-	gopkg.in/ini.v1 v1.51.0
+	gopkg.in/ini.v1 v1.57.0
 )
