@@ -12,7 +12,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
 	github.com/spf13/cobra v0.0.5
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.6.1
 	golang.org/x/net v0.0.0-20190327025741-74e053c68e29 // indirect
 	golang.org/x/sys v0.0.0-20200819171115-d785dc25833f // indirect
 	gopkg.in/ini.v1 v1.51.0
