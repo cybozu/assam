@@ -54,6 +54,12 @@ func (a *Azure) Authenticate(ctx context.Context, userDataDir string) (string, e
 		return "", err
 	}
 
+	// Shut down gracefully to ensure that user data is stored.
+	err = chromedp.Cancel(ctx)
+	if err != nil {
+		return "", err
+	}
+
 	return response, nil
 }
 
