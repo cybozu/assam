@@ -9,6 +9,7 @@ workflows:
     jobs:
       - static-analysis
       - test
+      - validate-renovate-config
       - package:
           requires:
             - static-analysis
@@ -89,6 +90,16 @@ jobs:
                   VERSION: v0.104.1
                 command: curl -sL https://git.io/goreleaser | bash
 
+  # Validate renovate config
+  validate-renovate-config:
+    executor: renovate-executor
+    steps:
+      - checkout
+      - run:
+          name: Validate renovate config
+          command: |
+            renovate-config-validator
+
 #
 # Executors
 #
@@ -97,6 +108,10 @@ executors:
     docker:
       - image: circleci/golang:1.12.7
 
+  renovate-executor:
+    docker:
+      - image: renovate/renovate:23.16.3-slim
+      
 #
 # Commands
 #
