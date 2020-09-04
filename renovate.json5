@@ -1,0 +1,24 @@
+{
+  "extends": [
+    ":label(renovate)", // Add label.
+    ":prConcurrentLimit10", // Limit to maximum 10 open PRs.
+    ":timezone(Asia/Tokyo)",
+    ":enableVulnerabilityAlertsWithLabel(security)", // Raise PR when vulnerability alerts are detected with label security.
+    ":semanticCommitTypeAll(chore)" // If semantic commits detected, use semantic commit type chore for all
+  ],
+  "circleci": {
+    "semanticCommitScope": "ci",
+    "automerge": true,
+  },
+  "golang": {
+    "postUpdateOptions": [
+      "gomodTidy" // Enable go mod tidy.
+    ],
+    "packageRules": [
+      { // If it's a patch update, it will merge automatically.
+        "updateTypes": ["patch"],
+        "automerge": true
+      }
+    ]
+  },
+}
