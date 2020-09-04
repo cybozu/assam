@@ -112,7 +112,7 @@ func TestPrompt_AskString(t *testing.T) {
 			}
 			actualPrompt := tt.fields.writer.(*bytes.Buffer).Bytes()
 			expectedPrompt := []byte(tt.want.prompt)
-			if bytes.Compare(actualPrompt, expectedPrompt) != 0 {
+			if !bytes.Equal(actualPrompt, expectedPrompt) {
 				t.Errorf("Prompt of Prompt.AskString() = '%s', want '%s'", actualPrompt, expectedPrompt)
 			}
 		})
@@ -223,7 +223,7 @@ func TestPrompt_AskInt(t *testing.T) {
 			}
 			actualPrompt := tt.fields.writer.(*bytes.Buffer).Bytes()
 			expectedPrompt := []byte(tt.want.prompt)
-			if bytes.Compare(actualPrompt, expectedPrompt) != 0 {
+			if !bytes.Equal(actualPrompt, expectedPrompt) {
 				t.Errorf("Prompt of Prompt.AskString() = '%s', want '%s'", actualPrompt, expectedPrompt)
 			}
 		})
