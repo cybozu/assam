@@ -110,7 +110,7 @@ executors:
 
   renovate-executor:
     docker:
-      - image: renovate/renovate:23.19.4-slim
+      - image: renovate/renovate:23.20.0-slim
       
 #
 # Commands
