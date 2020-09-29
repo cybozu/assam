@@ -9,6 +9,7 @@
   "circleci": {
     "semanticCommitScope": "ci",
     "automerge": true,
+    "automergeType": "branch" // Merge without creating a PR. If the test fails, create a PR.
   },
   "golang": {
     "postUpdateOptions": [
