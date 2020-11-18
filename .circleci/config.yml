@@ -106,7 +106,7 @@ jobs:
 executors:
   golang-executor:
     docker:
-      - image: circleci/golang:1.15.4
+      - image: circleci/golang:1.15.5
 
   renovate-executor:
     docker:
