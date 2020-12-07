@@ -71,7 +71,7 @@ jobs:
             - run:
                 name: Install goreleaser
                 command: |
-                  curl -sL https://github.com/goreleaser/goreleaser/releases/download/v0.104.1/goreleaser_amd64.deb > /tmp/goreleaser_amd64.deb
+                  curl -sL https://github.com/goreleaser/goreleaser/releases/download/v0.149.0/goreleaser_amd64.deb > /tmp/goreleaser_amd64.deb
                   sudo dpkg -i /tmp/goreleaser_amd64.deb
             - run:
                 name: Package binaries
@@ -87,7 +87,7 @@ jobs:
             - run:
                 name: Upload GitHub Release
                 environment:
-                  VERSION: v0.104.1
+                  VERSION: v0.149.0
                 command: curl -sL https://git.io/goreleaser | bash
 
   # Validate renovate config

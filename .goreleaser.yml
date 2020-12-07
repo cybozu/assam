@@ -13,15 +13,15 @@ builds:
     - amd64
   ldflags:
     - "-s -w -X \"github.com/cybozu/assam/cmd.version={{.Version}}\" -X \"github.com/cybozu/assam/cmd.commit={{.ShortCommit}}\" -X \"github.com/cybozu/assam/cmd.date={{.Date}}\""
-archive:
-  replacements:
-    darwin: Darwin
-    linux: Linux
-    windows: Windows
-    amd64: x86_64
-  format_overrides:
-    - goos: windows
-      format: zip
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -38,12 +38,12 @@ changelog:
     - '^style:'
     - Merge pull request
     - Merge branch
-brew:
-  github:
-    owner: cybozu
-    name: homebrew-assam
-  description: "Get a credential by AssumeRoleWithSAML for AWS CLI and SDK"
-  # Skip Homebrew Formula upload when prerelease.
-  skip_upload: auto
+brews:
+  - github:
+      owner: cybozu
+      name: homebrew-assam
+    description: "Get a credential by AssumeRoleWithSAML for AWS CLI and SDK"
+    # Skip Homebrew Formula upload when prerelease.
+    skip_upload: auto
 release:
   prerelease: auto
