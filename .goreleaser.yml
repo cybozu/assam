@@ -3,12 +3,21 @@ before:
   hooks:
     - go mod download
 builds:
-- env:
+- id: assam
+  env:
     - CGO_ENABLED=0
   goos:
-    - darwin
     - linux
     - windows
+  goarch:
+    - amd64
+  ldflags:
+    - "-s -w -X \"github.com/cybozu/assam/cmd.version={{.Version}}\" -X \"github.com/cybozu/assam/cmd.commit={{.ShortCommit}}\" -X \"github.com/cybozu/assam/cmd.date={{.Date}}\""
+- id: assam-darwin
+  env:
+    - CGO_ENABLED=1
+  goos:
+    - darwin
   goarch:
     - amd64
   ldflags:
