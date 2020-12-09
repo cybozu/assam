@@ -1,0 +1,29 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+
+jobs:
+  release:
+    # Run the build on macOS, because only the macOS version is built with CGO enabled.
+    # See https://github.com/golang/go/issues/12524
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.12.17
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - uses: goreleaser/goreleaser-action@v2
+        with:
+          version: v0.149.0
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.MACHINE_ACCOUNT_PAT }}
