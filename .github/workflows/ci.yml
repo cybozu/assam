@@ -1,0 +1,64 @@
+name: CI
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.12.17
+      - uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.30.0
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.12.17
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Install gotestsum
+        run: go get gotest.tools/gotestsum
+      - name: Test
+        run: make test
+  validate-renovate-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate Renovate config
+        run: npx --package renovate renovate-config-validator
+  package:
+    needs: [static-analysis, test]
+    # Run the build on macOS, because only the macOS version is built with CGO enabled.
+    # See https://github.com/golang/go/issues/12524
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.12.17
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - uses: goreleaser/goreleaser-action@v2
+        with:
+          version: v0.149.0
+          install-only: true
+      - name: Package binaries
+        run: make package
