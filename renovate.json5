@@ -17,7 +17,7 @@
     ],
     "packageRules": [
       { // If it's a patch update, it will merge automatically.
-        "updateTypes": ["patch"],
+        "matchUpdateTypes": ["patch"],
         "automerge": true
       }
     ]
