@@ -7,7 +7,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20200709115526-d1f6fc58448b
 	github.com/chromedp/chromedp v0.5.4-0.20200729192944-ccb1bb06c868
 	github.com/gobwas/pool v0.2.1 // indirect
-	github.com/google/uuid v1.1.1
+	github.com/google/uuid v1.2.0
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
