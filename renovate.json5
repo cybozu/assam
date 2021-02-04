@@ -19,6 +19,10 @@
       { // If it's a patch update, it will merge automatically.
         "matchUpdateTypes": ["patch"],
         "automerge": true
+      },
+      {
+        "matchPackageNames": ["aws/aws-sdk-go"],
+        "extends": ["schedule:monthly"]
       }
     ]
   },
