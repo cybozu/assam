@@ -48,7 +48,7 @@ changelog:
     - Merge pull request
     - Merge branch
 brews:
-  - github:
+  - tap:
       owner: cybozu
       name: homebrew-assam
     description: "Get a credential by AssumeRoleWithSAML for AWS CLI and SDK"
