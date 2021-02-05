@@ -3,7 +3,7 @@ module github.com/cybozu/assam
 go 1.12
 
 require (
-	github.com/aws/aws-sdk-go v1.37.2
+	github.com/aws/aws-sdk-go v1.37.6
 	github.com/chromedp/cdproto v0.0.0-20210122124816-7a656c010d57
 	github.com/chromedp/chromedp v0.6.5
 	github.com/google/uuid v1.2.0
