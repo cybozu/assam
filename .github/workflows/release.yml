@@ -5,6 +5,9 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
       - 'v[0-9]+.[0-9]+.[0-9]+-*'
 
+env:
+  cache-version: 1
+
 jobs:
   release:
     # Run the build on macOS, because only the macOS version is built with CGO enabled.
@@ -18,9 +21,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ env.cache-version }}-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ env.cache-version }}-${{ runner.os }}-go-
       - uses: goreleaser/goreleaser-action@v2
         with:
           version: v0.149.0

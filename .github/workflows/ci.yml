@@ -6,6 +6,9 @@ on:
     tags-ignore:
       - '**'
 
+env:
+  cache-version: 1
+
 jobs:
   static-analysis:
     runs-on: ubuntu-latest
@@ -27,9 +30,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ env.cache-version }}-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ env.cache-version }}-${{ runner.os }}-go-
       - name: Install gotestsum
         run: go get gotest.tools/gotestsum
       - name: Test
@@ -53,9 +56,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ env.cache-version }}-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
+            ${{ env.cache-version }}-${{ runner.os }}-go-
       - uses: goreleaser/goreleaser-action@v2
         with:
           version: v0.149.0
