@@ -21,7 +21,7 @@
         "automerge": true
       },
       {
-        "matchPackageNames": ["aws/aws-sdk-go"],
+        "matchPackageNames": ["aws/aws-sdk-go", "chromedp/cdproto"],
         "extends": ["schedule:monthly"]
       }
     ]
