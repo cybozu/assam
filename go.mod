@@ -12,6 +12,16 @@ require (
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
-	golang.org/x/text v0.3.5 // indirect
 	gopkg.in/ini.v1 v1.62.0
+)
+
+exclude (
+	// Exclude x/text affected by CVE-2020-28852.
+	// https://github.com/golang/go/issues/42536
+	golang.org/x/text v0.3.0
+	golang.org/x/text v0.3.1
+	golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
+	golang.org/x/text v0.3.2
+	golang.org/x/text v0.3.3
+	golang.org/x/text v0.3.4
 )
