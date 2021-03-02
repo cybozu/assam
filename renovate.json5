@@ -4,26 +4,11 @@
     ":prConcurrentLimit10", // Limit to maximum 10 open PRs.
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)", // Raise PR when vulnerability alerts are detected with label security.
-    ":semanticCommitTypeAll(chore)" // If semantic commits detected, use semantic commit type chore for all
+    ":semanticCommitTypeAll(chore)", // If semantic commits detected, use semantic commit type chore for all
+    "schedule:weekly"
   ],
-  "circleci": {
-    "semanticCommitScope": "ci",
-    "automerge": true,
-    "automergeType": "branch" // Merge without creating a PR. If the test fails, create a PR.
-  },
-  "golang": {
-    "postUpdateOptions": [
-      "gomodTidy" // Enable go mod tidy.
-    ],
-    "packageRules": [
-      { // If it's a patch update, it will merge automatically.
-        "matchUpdateTypes": ["patch"],
-        "automerge": true
-      },
-      {
-        "matchPackageNames": ["aws/aws-sdk-go", "chromedp/cdproto"],
-        "extends": ["schedule:monthly"]
-      }
-    ]
-  },
+  "postUpdateOptions": [
+    "gomodTidy" // Enable go mod tidy.
+  ],
+  "groupName": "all" // Combine pull requests into one
 }
