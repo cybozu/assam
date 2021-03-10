@@ -3,15 +3,14 @@ module github.com/cybozu/assam
 go 1.15
 
 require (
-	github.com/aws/aws-sdk-go v1.37.2
-	github.com/chromedp/cdproto v0.0.0-20210208055300-32adaa8323b6
-	github.com/chromedp/chromedp v0.6.5
+	github.com/aws/aws-sdk-go v1.37.27
+	github.com/chromedp/cdproto v0.0.0-20210305224431-50b9f457e822
+	github.com/chromedp/chromedp v0.6.8
 	github.com/google/uuid v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.3
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
-	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	gopkg.in/ini.v1 v1.62.0
 )
 
