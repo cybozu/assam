@@ -5,6 +5,9 @@ on:
       - '**'
     tags-ignore:
       - '**'
+  pull_request:
+    branches-ignore:
+      - 'renovate/**'
 
 env:
   cache-version: 1
