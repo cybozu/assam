@@ -16,3 +16,6 @@ test-results/
 
 # Release packages
 dist/
+
+# execution file
+assam
