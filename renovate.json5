@@ -5,7 +5,7 @@
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)", // Raise PR when vulnerability alerts are detected with label security.
     ":semanticCommitTypeAll(chore)", // If semantic commits detected, use semantic commit type chore for all
-    "schedule:weekly"
+    "schedule:monthly"
   ],
   "postUpdateOptions": [
     "gomodTidy" // Enable go mod tidy.
