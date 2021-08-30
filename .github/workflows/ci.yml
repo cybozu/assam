@@ -21,6 +21,23 @@ jobs:
       - uses: golangci/golangci-lint-action@v2
         with:
           version: v1.30.0
+  go-mod-tidy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.7
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ env.cache-version }}-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ env.cache-version }}-${{ runner.os }}-go-
+      - name: go mod tidy
+        run: |
+          go mod tidy
+          git diff --exit-code
   test:
     runs-on: ubuntu-latest
     steps:
@@ -45,7 +62,7 @@ jobs:
       - name: Validate Renovate config
         run: npx --package renovate renovate-config-validator
   package:
-    needs: [static-analysis, test]
+    needs: [static-analysis, go-mod-tidy, test]
     # Run the build on macOS, because only the macOS version is built with CGO enabled.
     # See https://github.com/golang/go/issues/12524
     runs-on: macos-latest
