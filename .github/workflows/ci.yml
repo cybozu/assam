@@ -2,9 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - '**'
+      - main
     tags-ignore:
       - '**'
+  pull_request:
 
 env:
   cache-version: 1
