@@ -3,14 +3,14 @@ module github.com/cybozu/assam
 go 1.15
 
 require (
-	github.com/aws/aws-sdk-go v1.40.34
-	github.com/chromedp/cdproto v0.0.0-20210829223513-dac050cc1a27
+	github.com/aws/aws-sdk-go v1.40.54
+	github.com/chromedp/cdproto v0.0.0-20211002082225-0242b9dca9f4
 	github.com/chromedp/chromedp v0.7.4
 	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
-	gopkg.in/ini.v1 v1.62.0
+	gopkg.in/ini.v1 v1.63.2
 )
 
 exclude (
