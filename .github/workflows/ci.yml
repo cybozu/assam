@@ -79,7 +79,7 @@ jobs:
             ${{ env.cache-version }}-${{ runner.os }}-go-
       - uses: goreleaser/goreleaser-action@v2
         with:
-          version: v0.155.0
+          version: v0.183.0
           install-only: true
       - name: Package binaries
         run: make package
