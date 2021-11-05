@@ -1,0 +1,22 @@
+name: Setup Go
+
+description: Sets up Go with the version listed in .tool-versions
+
+runs:
+  using: composite
+
+  steps:
+    - id: tool-versions
+      run: awk '{ print "::set-output name="$1"::"$2 }' .tool-versions
+      shell: bash
+
+    - uses: actions/setup-go@v2
+      with:
+        go-version: ${{ steps.tool-versions.outputs.golang }}
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          v1-${{ runner.os }}-go-
