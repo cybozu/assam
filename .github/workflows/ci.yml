@@ -46,7 +46,7 @@ jobs:
     needs: [static-analysis, go-mod-tidy, test]
     # Run the build on macOS, because only the macOS version is built with CGO enabled.
     # See https://github.com/golang/go/issues/12524
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/setup-go

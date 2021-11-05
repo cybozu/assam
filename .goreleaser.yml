@@ -20,6 +20,7 @@ builds:
     - darwin
   goarch:
     - amd64
+    - arm64
   ldflags:
     - "-s -w -X \"github.com/cybozu/assam/cmd.version={{.Version}}\" -X \"github.com/cybozu/assam/cmd.commit={{.ShortCommit}}\" -X \"github.com/cybozu/assam/cmd.date={{.Date}}\""
 archives:
