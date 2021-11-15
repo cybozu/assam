@@ -18,6 +18,7 @@ jobs:
           version: v1.42.1
           skip-go-installation: true
           skip-pkg-cache: true
+          skip-build-cache: true
   go-mod-tidy:
     runs-on: ubuntu-latest
     steps:
