@@ -11,9 +11,9 @@ jobs:
   static-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-go
-      - uses: golangci/golangci-lint-action@v2
+      - uses: golangci/golangci-lint-action@v3
         with:
           version: v1.42.1
           skip-go-installation: true
@@ -22,7 +22,7 @@ jobs:
   go-mod-tidy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-go
       - name: go mod tidy
         run: |
@@ -31,7 +31,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-go
       - name: Install gotestsum
         run: go get gotest.tools/gotestsum
@@ -40,7 +40,7 @@ jobs:
   validate-renovate-config:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Validate Renovate config
         run: npx --package renovate renovate-config-validator
   package:
@@ -49,7 +49,7 @@ jobs:
     # See https://github.com/golang/go/issues/12524
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-go
       - uses: goreleaser/goreleaser-action@v2
         with:
