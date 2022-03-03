@@ -11,7 +11,7 @@ jobs:
     # See https://github.com/golang/go/issues/12524
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-go
