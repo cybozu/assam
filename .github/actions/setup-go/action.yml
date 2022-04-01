@@ -14,7 +14,7 @@ runs:
       with:
         go-version: ${{ steps.tool-versions.outputs.golang }}
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       with:
         path: |
           ~/.cache/go-build
