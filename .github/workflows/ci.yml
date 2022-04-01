@@ -57,7 +57,7 @@ jobs:
           install-only: true
       - name: Package binaries
         run: make package
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: dist
           path: dist
