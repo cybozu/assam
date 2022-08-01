@@ -12,5 +12,25 @@
   "postUpdateOptions": [
     "gomodTidy" // Enable go mod tidy.
   ],
-  "groupName": "all" // Combine pull requests into one
+  "groupName": "all", // Combine pull requests into one
+  regexManagers: [
+    {
+      fileMatch: ["^.tool-versions$"],
+      matchStrings: ["golang (?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      datasourceTemplate: "golang-version",
+      depNameTemplate: "tool-versions/golang-version"
+    }
+  ],
+  packageRules: [
+    {
+      groupName: "golang-version",
+      matchDatasources: ["golang-version"],
+      matchManagers: ["gomod"]
+    },
+    {
+      groupName: "golang-version",
+      matchManagers: ["regex"],
+      matchPackageNames: ["tool-versions/golang-version"]
+    }
+  ]
 }
