@@ -15,7 +15,6 @@ jobs:
       - uses: ./.github/actions/setup-go
       - uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.42.1
           skip-go-installation: true
           skip-pkg-cache: true
           skip-build-cache: true
