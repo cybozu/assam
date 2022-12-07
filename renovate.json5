@@ -16,12 +16,6 @@
   regexManagers: [
     {
       fileMatch: ["^.tool-versions$"],
-      matchStrings: ["golang (?<currentValue>\\d+\\.\\d+\\.\\d+)"],
-      datasourceTemplate: "golang-version",
-      depNameTemplate: "tool-versions/golang-version"
-    },
-    {
-      fileMatch: ["^.tool-versions$"],
       matchStrings: ["golangci-lint (?<currentValue>\\d+\\.\\d+\\.\\d+)"],
       datasourceTemplate: "github-releases",
       depNameTemplate: "golangci/golangci-lint",
@@ -36,8 +30,8 @@
     },
     {
       groupName: "golang-version",
-      matchManagers: ["regex"],
-      matchPackageNames: ["tool-versions/golang-version"]
+      matchManagers: ["asdf"],
+      matchPackageNames: ["golang"]
     },
     {
       groupName: "golangci-lint",
