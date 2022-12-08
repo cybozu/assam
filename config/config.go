@@ -1,3 +1,4 @@
+// Package config load and save user config.
 package config
 
 import (

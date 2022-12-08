@@ -1,3 +1,4 @@
+// Package prompt provides CLI prompt.
 package prompt
 
 import (

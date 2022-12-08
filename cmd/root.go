@@ -1,3 +1,4 @@
+// Package cmd provides assam CLI.
 package cmd
 
 import (
