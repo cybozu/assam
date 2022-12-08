@@ -1,3 +1,4 @@
+// Package defaults get settings.
 package defaults
 
 import (

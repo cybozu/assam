@@ -1,3 +1,4 @@
+// Package idp provides identity provider authentication.
 package idp
 
 import (
