@@ -7,7 +7,7 @@ runs:
 
   steps:
     - id: tool-versions
-      run: awk '{ print "::set-output name="$1"::"$2 }' .tool-versions
+      run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
       shell: bash
 
     - uses: actions/setup-go@v3
