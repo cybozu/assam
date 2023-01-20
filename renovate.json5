@@ -5,7 +5,7 @@
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)", // Raise PR when vulnerability alerts are detected with label security.
     ":semanticCommitTypeAll(chore)", // If semantic commits detected, use semantic commit type chore for all
-    "schedule:monthly"
+    "schedule:[after 3am on the first day of the month]" // Monthly(before 3am on the first day of the month) is unstable.
   ],
   dependencyDashboard: true,
   dependencyDashboardLabels: ["renovate"],
