@@ -5,7 +5,6 @@
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)", // Raise PR when vulnerability alerts are detected with label security.
     ":semanticCommitTypeAll(chore)", // If semantic commits detected, use semantic commit type chore for all
-    "schedule:[after 3am on the first day of the month]" // Monthly(before 3am on the first day of the month) is unstable.
   ],
   dependencyDashboard: true,
   dependencyDashboardLabels: ["renovate"],
@@ -13,6 +12,7 @@
     "gomodTidy" // Enable go mod tidy.
   ],
   "groupName": "all", // Combine pull requests into one
+  "schedule": ["after 3am on the first day of the month"], // Monthly(before 3am on the first day of the month) is unstable.
   regexManagers: [
     {
       fileMatch: ["^.tool-versions$"],
