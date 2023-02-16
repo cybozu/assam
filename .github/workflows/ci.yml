@@ -55,7 +55,7 @@ jobs:
       - uses: ./.github/actions/setup-go
       - uses: goreleaser/goreleaser-action@v4
         with:
-          version: v0.183.0
+          version: v1.15.2
           install-only: true
       - name: Package binaries
         run: make package

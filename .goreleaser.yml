@@ -24,11 +24,8 @@ builds:
   ldflags:
     - "-s -w -X \"github.com/cybozu/assam/cmd.version={{.Version}}\" -X \"github.com/cybozu/assam/cmd.commit={{.ShortCommit}}\" -X \"github.com/cybozu/assam/cmd.date={{.Date}}\""
 archives:
-  - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      amd64: x86_64
+  - name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{- title .Os }}_{{- if eq .Arch "amd64" }}x86_64{{- else }}{{ .Arch }}{{ end }}
     format_overrides:
       - goos: windows
         format: zip
