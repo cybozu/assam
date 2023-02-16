@@ -16,4 +16,4 @@ test: ## test: Test packages.
 
 .PHONY: package
 package: ## package: build executable binary archives.
-	goreleaser --snapshot --skip-publish --rm-dist
+	goreleaser --snapshot --skip-publish --clean
