@@ -53,9 +53,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-go
+      - id: tool-versions
+        run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
+        shell: bash
       - uses: goreleaser/goreleaser-action@v4
         with:
-          version: v1.15.2
+          version: "v${{ steps.tool-versions.outputs.goreleaser }}"
           install-only: true
       - name: Package binaries
         run: make package
