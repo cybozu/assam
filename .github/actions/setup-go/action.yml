@@ -13,12 +13,4 @@ runs:
     - uses: actions/setup-go@v3
       with:
         go-version: ${{ steps.tool-versions.outputs.golang }}
-
-    - uses: actions/cache@v3
-      with:
-        path: |
-          ~/.cache/go-build
-          ~/go/pkg/mod
-        key: v2-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          v2-${{ runner.os }}-go-
+        cache: true
