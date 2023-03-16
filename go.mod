@@ -3,13 +3,13 @@ module github.com/cybozu/assam
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go v1.44.191
-	github.com/chromedp/cdproto v0.0.0-20230130203205-31e3d8a04b57
-	github.com/chromedp/chromedp v0.8.7
+	github.com/aws/aws-sdk-go v1.44.222
+	github.com/chromedp/cdproto v0.0.0-20230310204135-a6d692f2c96d
+	github.com/chromedp/chromedp v0.9.1
 	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.6.1
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	gopkg.in/ini.v1 v1.67.0
 )
 
@@ -25,7 +25,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
