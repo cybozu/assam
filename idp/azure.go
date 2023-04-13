@@ -34,7 +34,7 @@ func NewAzure(samlRequest string, tenantID string) Azure {
 
 // Authenticate sends SAML request to Azure and fetches SAML response
 func (a *Azure) Authenticate(ctx context.Context, userDataDir string) (string, error) {
-	ctx, cancel := a.setupContext(ctx, userDataDir)
+	ctx, cancel := a.setupContext(userDataDir)
 	defer cancel()
 
 	// Need network.Enable() to handle network events.
@@ -64,7 +64,7 @@ func (a *Azure) Authenticate(ctx context.Context, userDataDir string) (string, e
 	return response, nil
 }
 
-func (a *Azure) setupContext(ctx context.Context, userDataDir string) (context.Context, context.CancelFunc) {
+func (a *Azure) setupContext(userDataDir string) (context.Context, context.CancelFunc) {
 	// Need to expand environment variables because chromedp does not expand.
 	expandedDir := os.ExpandEnv(userDataDir)
 
