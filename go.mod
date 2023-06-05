@@ -3,13 +3,13 @@ module github.com/cybozu/assam
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go v1.44.263
-	github.com/chromedp/cdproto v0.0.0-20230512205701-c5692af2b095
+	github.com/aws/aws-sdk-go v1.44.275
+	github.com/chromedp/cdproto v0.0.0-20230601223857-b9862e644d94
 	github.com/chromedp/chromedp v0.9.1
 	github.com/google/uuid v1.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.7.0
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 	gopkg.in/ini.v1 v1.67.0
 )
 
