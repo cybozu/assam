@@ -23,6 +23,8 @@ options:
     Configuration Mode
   -p, --profile string
     AWS profile name (default: "default")
+  -w, --web
+    Open the AWS Console URL in your default browser (*1)
 ```
 
 Please be careful that assam overrides default profile in `.aws/credentials` by default.
@@ -39,6 +41,14 @@ $ brew install cybozu/assam/assam
 ### Manual
 
 Download a binary file from [Release](https://github.com/cybozu/assam/releases) and save it to the desired location.
+
+## Notes
+
+### (*1) Command to open the default browser
+
+- Windows: `start`
+- macOS : `open`
+- Linux: `xdg-open`
 
 ## Contribution
 
