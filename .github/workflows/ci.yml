@@ -11,7 +11,7 @@ jobs:
   static-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-go
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
@@ -24,7 +24,7 @@ jobs:
   go-mod-tidy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-go
       - name: go mod tidy
         run: |
@@ -33,7 +33,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-go
       - name: Install gotestsum
         run: go install gotest.tools/gotestsum@latest
@@ -42,16 +42,16 @@ jobs:
   validate-renovate-config:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Validate Renovate config
         run: npx --package renovate renovate-config-validator
   package:
     needs: [static-analysis, go-mod-tidy, test]
     # Run the build on macOS, because only the macOS version is built with CGO enabled.
     # See https://github.com/golang/go/issues/12524
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-go
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
