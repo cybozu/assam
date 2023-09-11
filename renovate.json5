@@ -13,15 +13,6 @@
   ],
   "groupName": "all", // Combine pull requests into one
   "schedule": ["after 3am on the first day of the month"], // Monthly(before 3am on the first day of the month) is unstable.
-  regexManagers: [
-    {
-      fileMatch: ["^.tool-versions$"],
-      matchStrings: ["golangci-lint (?<currentValue>\\d+\\.\\d+\\.\\d+)"],
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "golangci/golangci-lint",
-      extractVersionTemplate: "^v(?<version>.*)$"
-    }
-  ],
   packageRules: [
     {
       groupName: "golang-version",
@@ -33,10 +24,5 @@
       matchManagers: ["asdf"],
       matchPackageNames: ["golang"]
     },
-    {
-      groupName: "golangci-lint",
-      matchManagers: ["regex"],
-      matchPackageNames: ["golangci/golangci-lint"]
-    }
   ]
 }
