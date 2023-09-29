@@ -47,9 +47,7 @@ jobs:
         run: npx --package renovate renovate-config-validator
   package:
     needs: [static-analysis, go-mod-tidy, test]
-    # Run the build on macOS, because only the macOS version is built with CGO enabled.
-    # See https://github.com/golang/go/issues/12524
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-go
