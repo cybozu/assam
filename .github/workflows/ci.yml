@@ -56,7 +56,7 @@ jobs:
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
         shell: bash
-      - uses: goreleaser/goreleaser-action@v4
+      - uses: goreleaser/goreleaser-action@v5
         with:
           version: "v${{ steps.tool-versions.outputs.goreleaser }}"
           install-only: true
