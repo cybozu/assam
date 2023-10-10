@@ -4,6 +4,9 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"runtime"
+	"strings"
+
 	"github.com/cybozu/assam/aws"
 	"github.com/cybozu/assam/config"
 	"github.com/cybozu/assam/defaults"
@@ -11,7 +14,9 @@ import (
 	"github.com/cybozu/assam/prompt"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"strconv"
@@ -37,6 +42,7 @@ func newRootCmd() *cobra.Command {
 	var configure bool
 	var roleName string
 	var profile string
+	var web bool
 	var showVersion bool
 
 	cmd := &cobra.Command{
@@ -56,6 +62,10 @@ func newRootCmd() *cobra.Command {
 					return err
 				}
 				return nil
+			}
+
+			if web {
+				return openBrowser()
 			}
 
 			cfg, err := config.NewConfig(profile)
@@ -105,6 +115,7 @@ func newRootCmd() *cobra.Command {
 	cmd.PersistentFlags().BoolVarP(&configure, "configure", "c", false, "configure initial settings")
 	cmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "AWS profile")
 	cmd.PersistentFlags().StringVarP(&roleName, "role", "r", "", "AWS IAM role name")
+	cmd.PersistentFlags().BoolVarP(&web, "web", "w", false, "open AWS management console in a browser")
 	cmd.PersistentFlags().BoolVarP(&showVersion, "version", "v", false, "Show version")
 
 	return cmd
@@ -173,6 +184,37 @@ func configureSettings(profile string) error {
 	}
 
 	return config.Save(cfg, profile)
+}
+
+func openBrowser() error {
+	url, err := aws.NewAWSClient().GetConsoleURL()
+	if err != nil {
+		return err
+	}
+
+	var cmd string
+	var args []string
+	switch runtime.GOOS {
+	case "darwin":
+		cmd = "open"
+		args = []string{url}
+	case "windows":
+		cmd = "cmd"
+		args = []string{"/c", "start", strings.ReplaceAll(url, "&", "^&")} // for Windows: "&! <>^|" etc. must be escaped, but since only "&" is used, the corresponding
+	case "linux":
+		cmd = "xdg-open"
+		args = []string{url}
+	}
+
+	if len(cmd) != 0 {
+		err = exec.Command(cmd, args...).Run()
+		if err != nil {
+			return err
+		}
+	} else {
+		return errors.New("OS does not support -web command")
+	}
+	return nil
 }
 
 func handleSignal(cancel context.CancelFunc) {
