@@ -3,10 +3,10 @@ module github.com/cybozu/assam
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go v1.45.23
-	github.com/chromedp/cdproto v0.0.0-20230914224007-a15a36ccbc2e
-	github.com/chromedp/chromedp v0.9.2
-	github.com/google/uuid v1.3.1
+	github.com/aws/aws-sdk-go v1.47.0
+	github.com/chromedp/cdproto v0.0.0-20231025043423-5615e204d422
+	github.com/chromedp/chromedp v0.9.3
+	github.com/google/uuid v1.4.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
@@ -18,7 +18,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
-	github.com/gobwas/ws v1.2.1 // indirect
+	github.com/gobwas/ws v1.3.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
