@@ -16,9 +16,15 @@ jobs:
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
         shell: bash
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          repositories: "assam,homebrew-assam"
       - uses: goreleaser/goreleaser-action@v5
         with:
           version: "v${{ steps.tool-versions.outputs.goreleaser }}"
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.MACHINE_ACCOUNT_PAT }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
