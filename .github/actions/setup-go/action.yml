@@ -10,7 +10,7 @@ runs:
       run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
       shell: bash
 
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ steps.tool-versions.outputs.golang }}
         cache: true
