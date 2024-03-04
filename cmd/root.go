@@ -50,7 +50,7 @@ func newRootCmd() *cobra.Command {
 		Short:        "assam simplifies AssumeRoleWithSAML with CLI",
 		Long:         `It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.`,
 		SilenceUsage: true,
-		RunE: func(_ *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, _ []string) error {
 			if showVersion {
 				printVersion()
 				return nil
