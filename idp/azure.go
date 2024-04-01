@@ -3,13 +3,15 @@ package idp
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
+	"net/url"
+	"os"
+
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 	"github.com/cybozu/assam/aws"
 	"github.com/pkg/errors"
-	"net/url"
-	"os"
 )
 
 const (
@@ -107,7 +109,16 @@ func (a *Azure) fetchSAMLResponse(ctx context.Context) (string, error) {
 			continue
 		}
 
-		form, err := url.ParseQuery(req.Request.PostData)
+		var postData string
+		for p := range req.Request.PostDataEntries {
+			postData += req.Request.PostDataEntries[p].Bytes
+		}
+		d, err := base64.StdEncoding.DecodeString(postData)
+		if err != nil {
+			return "", err
+		}
+
+		form, err := url.ParseQuery(string(d))
 		if err != nil {
 			return "", err
 		}
