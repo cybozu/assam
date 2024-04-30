@@ -16,7 +16,7 @@ jobs:
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
         shell: bash
-      - uses: golangci/golangci-lint-action@v4
+      - uses: golangci/golangci-lint-action@v5
         with:
           skip-pkg-cache: true
           skip-build-cache: true
