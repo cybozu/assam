@@ -16,10 +16,8 @@ jobs:
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
         shell: bash
-      - uses: golangci/golangci-lint-action@v5
+      - uses: golangci/golangci-lint-action@38e1018663fa5173f3968ea0777460d3de38f256 # v5.3.0
         with:
-          skip-pkg-cache: true
-          skip-build-cache: true
           version: v${{ steps.tool-versions.outputs.golangci-lint }}
   go-mod-tidy:
     runs-on: ubuntu-latest
@@ -54,7 +52,7 @@ jobs:
       - id: tool-versions
         run: awk '{ print $1"="$2 }' .tool-versions >> $GITHUB_OUTPUT
         shell: bash
-      - uses: goreleaser/goreleaser-action@v5
+      - uses: goreleaser/goreleaser-action@5742e2a039330cbb23ebf35f046f814d4c6ff811 # v5.1.0
         with:
           version: "v${{ steps.tool-versions.outputs.goreleaser }}"
           install-only: true
