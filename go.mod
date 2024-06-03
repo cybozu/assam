@@ -3,8 +3,8 @@ module github.com/cybozu/assam
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go v1.52.0
-	github.com/chromedp/cdproto v0.0.0-20240501202034-ef67d660e9fd
+	github.com/aws/aws-sdk-go v1.53.14
+	github.com/chromedp/cdproto v0.0.0-20240602235142-49d0e97b7881
 	github.com/chromedp/chromedp v0.9.5
 	github.com/google/uuid v1.6.0
 	github.com/pkg/errors v0.9.1
@@ -29,13 +29,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-exclude (
-	// Exclude x/text affected by CVE-2020-28852.
-	// https://github.com/golang/go/issues/42536
-	golang.org/x/text v0.3.0
-	golang.org/x/text v0.3.1
-	golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
-	golang.org/x/text v0.3.2
-	golang.org/x/text v0.3.3
-	golang.org/x/text v0.3.4
-)
+// Exclude x/text affected by CVE-2020-28852.
+// https://github.com/golang/go/issues/42536
+exclude golang.org/x/text v0.15.0
