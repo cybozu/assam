@@ -1,6 +1,10 @@
 assam
 ====
 
+> [!WARNING]
+> assam was deprecated on 31 July 2024. Installation of assam by Homebrew will be disabled on 31 July 2025.
+> As an alternative, you can use the official [AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) or fork assam and maintain it yourself.
+
 It is difficult to get a credential of AWS when using AssumeRoleWithSAML. This tool simplifies it.
 
 ## Requirement
